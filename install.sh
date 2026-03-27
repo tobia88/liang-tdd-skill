@@ -72,20 +72,22 @@ install() {
       fi
       echo "  Linked: $dst -> $src (directory)"
     else
-      # File: symlink (or copy on Windows if symlinks need admin)
+      # File: try symlink, fall back to copy on Windows (cross-drive symlinks need admin)
       if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" || "$OSTYPE" == "win32" ]]; then
         local win_src
         win_src=$(cygpath -w "$full_src" 2>/dev/null || echo "$full_src" | sed 's|/|\\|g')
         local win_dst
         win_dst=$(cygpath -w "$full_dst" 2>/dev/null || echo "$full_dst" | sed 's|/|\\|g')
-        # Try symlink first, fall back to hard link, then copy
-        cmd //c "mklink \"$win_dst\" \"$win_src\"" > /dev/null 2>&1 || \
-        cmd //c "mklink /H \"$win_dst\" \"$win_src\"" > /dev/null 2>&1 || \
-        cp "$full_src" "$full_dst"
+        if cmd //c "mklink \"$win_dst\" \"$win_src\"" > /dev/null 2>&1; then
+          echo "  Linked: $dst -> $src (file symlink)"
+        else
+          cp "$full_src" "$full_dst"
+          echo "  Copied: $dst (cross-drive copy — re-run install.sh after updating this file)"
+        fi
       else
         ln -s "$full_src" "$full_dst"
+        echo "  Linked: $dst -> $src (file symlink)"
       fi
-      echo "  Linked: $dst -> $src (file)"
     fi
   done
 
