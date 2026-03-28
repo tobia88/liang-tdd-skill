@@ -72,7 +72,6 @@ bash install.sh --uninstall
 | `--manual` | `add-mission`, `resume-mission` | Enable interactive mode with context clearing gates and task approval pauses |
 | `--research` | `add-mission`, `resume-mission` | Run upfront web research before brainstorming to enrich questions |
 | `--skip-discuss` | `add-mission`, `resume-mission` | Skip Phase 1.5 (architecture discussion), go straight to task decomposition |
-| `--no-limit` | `add-mission`, `resume-mission` | Disable 8/10 confidence gate in brainstorming; continue until user says stop |
 
 ## How It Works
 
