@@ -24,10 +24,13 @@ five phases: Brainstorm → Task Decomposition → Plan → Execute (RED→GREEN
 ## Commands
 
 ```
-/liang-tdd:add-mission [--no-limit] "topic"    Start a new mission
-/liang-tdd:resume-mission [--auto] [--no-limit] [number]
+/liang-tdd:add-mission [--research] [--skip-discuss] "topic"
+                                                Start a new mission
+/liang-tdd:resume-mission [--auto] [--research] [--skip-discuss] [number]
                                                 Resume a mission (or auto-detect latest)
 /liang-tdd:progress [number]                    Show mission progress and next action
+/liang-tdd:add-todo [description]               Capture idea/task as todo (from args or conversation)
+/liang-tdd:check-todos                          List pending todos — edit, delete, or promote to mission
 /liang-tdd:help                                 Show this help
 ```
 
@@ -52,20 +55,21 @@ Sends a Windows notification when done.
 ## Flags
 
 ```
---no-limit    Disable the 8/10 confidence gate in brainstorming.
-              The brainstormer keeps asking questions until you say "stop".
-              Works on: add-mission, resume-mission (when in Phase 1)
-
 --auto        Task Manager auto-accepts all tasks without walking through
               each TEST_LIST for approval. Other phases unaffected.
               Works on: resume-mission
+
+--research    Run upfront web research before brainstorming to enrich
+              questions with library/tool recommendations. Skipped by default.
+              Works on: add-mission, resume-mission (when in Phase 1)
 ```
 
 ## Workflow Phases
 
 ```
-Phase 1: Brainstorm    — Upfront research on your topic, then Socratic questioning with research-backed
-                         recommendations shown as AskUserQuestion options (8/10 confidence gate)
+Phase 1: Brainstorm    — Socratic questioning to extract requirements (user-chosen confidence gate)
+                         Asks your preferred confidence threshold, then keeps going until you say stop
+                         With --research: runs upfront web research first, enriches options
                          Runs INLINE in main session (not a subagent) for AskUserQuestion support
 Phase 2: Task Manager  — Break work into tasks, each with a TEST_LIST.md (ordered bash test scripts)
 Phase 3: Planner       — Write per-test-cycle execution plan (RED→GREEN→BLUE steps for each test)
@@ -156,9 +160,9 @@ with git, Perforce, or no version control.
 **QA Failure Research** — On 2nd+ QA failure, online research is triggered.
 Findings are saved and fed to the planner for better re-plans.
 
-**Confidence Gate** — Phase 1 blocks until the brainstormer rates understanding
-at 8/10 or higher. Use `--no-limit` to disable and keep brainstorming until
-you say "stop".
+**Confidence Gate** — Phase 1 asks your preferred confidence threshold at the
+start. When reached, it asks whether to stop or keep going. You always decide
+when brainstorming ends — it never auto-stops.
 
 **Context Clearing Gates** — Optional conversation clearing offered before
 Task Manager and each Planner to keep context fresh. Progress is always saved.

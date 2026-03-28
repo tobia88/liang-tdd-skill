@@ -55,8 +55,8 @@ bash install.sh --uninstall
 
 | Command | Description |
 |---------|-------------|
-| `/liang-tdd:add-mission [--no-limit] "topic"` | Start a new mission and begin brainstorming |
-| `/liang-tdd:resume-mission [--auto] [--no-limit] [number]` | Resume a mission from where it left off |
+| `/liang-tdd:add-mission [--research] [--skip-discuss] "topic"` | Start a new mission and begin brainstorming |
+| `/liang-tdd:resume-mission [--auto] [--research] [--skip-discuss] [number]` | Resume a mission from where it left off |
 | `/liang-tdd:progress [number]` | Show mission status, task progress, and next action |
 | `/liang-tdd:help` | Display the full command reference |
 
@@ -64,8 +64,9 @@ bash install.sh --uninstall
 
 | Flag | Works on | Effect |
 |------|----------|--------|
-| `--no-limit` | `add-mission`, `resume-mission` | Disable the 8/10 confidence gate. Brainstormer keeps asking until you say "stop" |
 | `--auto` | `resume-mission` | Task Manager auto-accepts all tasks without interactive approval |
+| `--research` | `add-mission`, `resume-mission` | Run upfront web research before brainstorming to enrich questions |
+| `--skip-discuss` | `add-mission`, `resume-mission` | Skip Phase 1.5 (architecture discussion) |
 
 ## How It Works
 
@@ -73,8 +74,8 @@ bash install.sh --uninstall
 You: /liang-tdd:add-mission "receipt scanner"
          |
          v
-  Phase 1: Brainstorm          Opus researches the topic, then asks you
-         |                     Socratic questions until confidence >= 8/10.
+  Phase 1: Brainstorm          Opus asks your confidence threshold, then
+         |                     Socratic questions until you choose to stop.
          v                     Saves BRAINSTORM.md
   Phase 2: Task Manager        Decomposes into tasks, each with a
          |                     TEST_LIST.md of ordered bash test scripts.

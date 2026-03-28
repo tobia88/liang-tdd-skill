@@ -13,6 +13,7 @@ directory under `.planning/vibe/`.
 .planning/vibe/
 ├── 001-receipt-scanner/
 │   ├── BRAINSTORM.md
+│   ├── DECISIONS.md          (from Phase 1.5 discuss, optional)
 │   ├── TASKS.md
 │   ├── PROGRESS.md
 │   ├── FINAL_REPORT.md
@@ -21,6 +22,7 @@ directory under `.planning/vibe/`.
 │           ├── TEST_LIST.md
 │           ├── PLAN.md
 │           ├── QA_REPORT.md
+│           ├── DEBUG.md            (diagnosis after QA failure)
 │           ├── RESEARCH-2.md       (created on 2nd+ QA failure)
 │           └── tests/
 │               ├── test-01-file-exists.sh
