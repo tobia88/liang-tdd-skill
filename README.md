@@ -69,6 +69,7 @@ bash install.sh --uninstall
 
 | Flag | Works on | Effect |
 |------|----------|--------|
+| `--auto` | `resume-mission` | Task Manager auto-accepts all tasks without interactive approval |
 | `--manual` | `add-mission`, `resume-mission` | Enable interactive mode with context clearing gates and task approval pauses |
 | `--research` | `add-mission`, `resume-mission` | Run upfront web research before brainstorming to enrich questions |
 | `--skip-discuss` | `add-mission`, `resume-mission` | Skip Phase 1.5 (architecture discussion), go straight to task decomposition |
@@ -85,8 +86,8 @@ You: /liang-tdd:add-mission "receipt scanner"
   Phase 1.5: Discuss           Identifies architecture gray areas, spawns
          |                     parallel advisor agents, captures decisions.
          v                     Saves DECISIONS.md
-  Phase 2: Task Manager        Decomposes into tasks, each with a TEST_LIST.md
-         |                     of ordered bash test scripts. Auto-accepted by
+  Phase 2: Task Manager        Spawns per-task researcher agents, then decomposes
+         |                     into tasks with TEST_LIST.md. Auto-accepted by
          v                     default (use --manual for interactive approval).
   Phase 3: Planner             Writes a step-by-step PLAN.md for each task:
          |                     exact RED > GREEN > BLUE cycle instructions.
@@ -134,8 +135,9 @@ A PreToolUse hook (`tdd-test-guard.js`) enforces test immutability at the tool l
 |-------|-------|-----|
 | Brainstormer | Opus (inline) | Needs AskUserQuestion for Socratic questioning |
 | Discuss Advisor | Sonnet (subagent, parallel) | Researches each gray area independently |
+| Discuss Orchestrator | Opus (inline) | Presents comparison tables, captures decisions |
 | Task Manager | Opus (subagent) | Judgment for task decomposition + test design |
-| Researcher | Sonnet (subagent, parallel) | Per-task codebase analysis before TEST_LIST |
+| Task Researcher | Sonnet (subagent, parallel) | Per-task codebase analysis before TEST_LIST |
 | Planner | Opus (subagent) | Depth for unambiguous per-cycle plans |
 | Executor | Sonnet (CLI) | Follows plan literally in isolated worktree |
 | QA Verifier | Sonnet (CLI) | Runs tests, checks snapshots, verifies coverage |
@@ -208,7 +210,7 @@ The runner spawns fresh Claude sessions per task — no context degradation. Sen
 | `--exec-model MODEL` | claude-sonnet-4-6 | Model for executor/QA |
 | `--auto` | off | Fully autonomous (Phases 1-5) |
 | `--prompt-file FILE` | — | Spec file as BRAINSTORM.md (requires `--auto`) |
-| `--mission-name NAME` | — | Slug for new mission (requires `--auto`) |
+| `--mission-name NAME` | — | Slug for new mission (requires `--auto` + `--prompt-file`) |
 
 </details>
 

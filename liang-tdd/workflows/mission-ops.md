@@ -19,6 +19,7 @@ directory under `.planning/vibe/`.
 │   ├── FINAL_REPORT.md
 │   └── tasks/
 │       └── 01-ocr-setup/
+│           ├── RESEARCH.md         (codebase analysis from Phase 2)
 │           ├── TEST_LIST.md
 │           ├── PLAN.md
 │           ├── QA_REPORT.md
